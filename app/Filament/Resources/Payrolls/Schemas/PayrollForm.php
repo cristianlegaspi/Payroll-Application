@@ -72,7 +72,6 @@ class PayrollForm
                 TextInput::make('other_earnings')
                     ->required()
                     ->numeric()
-                    ->disabled(true)
                     ->default(0.0),
                 TextInput::make('gross_pay')
                     ->required()
