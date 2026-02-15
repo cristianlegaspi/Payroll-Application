@@ -142,18 +142,30 @@ class PayrollsTable
             // ✅ Payroll Period Filter
             ->filters([
                 SelectFilter::make('payroll_period_id')
-                    ->label('Payroll Period')
-                    ->options(
-                        PayrollPeriod::pluck('description', 'id')
+                    ->label('Payroll Period (Finalized)')
+                    ->relationship(
+                        'payrollPeriod',
+                        'description',
+                        fn (Builder $query) => $query->where('status', 'finalized')->orderBy('description', 'desc')
                     )
                     ->searchable()
-                    ->preload()
-                    ->query(function (Builder $query, array $data) {
-                        if (filled($data['value'])) {
-                            $query->where('payroll_period_id', $data['value']);
-                        }
-                    }),
+                    ->preload(),
+
+                    
+                // Employee Filter
+                SelectFilter::make('employee_id')
+                    ->label('Employee')
+                    ->relationship(
+                        'employee',
+                        'full_name',
+                        fn (Builder $query) => $query->orderBy('full_name')
+                    )
+                    ->searchable()
+                    ->preload(),
             ])
+
+            
+
 
             ->recordActions([
                 ViewAction::make(),
