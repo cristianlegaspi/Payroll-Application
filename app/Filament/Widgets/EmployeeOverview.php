@@ -25,18 +25,18 @@ class EmployeeOverview extends StatsOverviewWidget
                 ->icon('heroicon-o-users')
                 ->color('primary'),
 
-            Stat::make('Active Payroll Period', $activePeriodDesc)
-                ->icon('heroicon-o-calendar-days')
-                ->description('Currently active payroll period')
-                ->color('warning'),
+            // Stat::make('Active Payroll Period', $activePeriodDesc)
+            //     ->icon('heroicon-o-calendar-days')
+            //     ->description('Currently active payroll period')
+            //     ->color('warning'),
 
-            Stat::make(
-                'Total Gross Pay',
-                '₱' . number_format($totalGrossPay, 2)
-            )
-                ->icon('heroicon-o-currency-dollar')
-                ->description('Sum of gross pay for open payroll periods')
-                ->color('success'),
+            // Stat::make(
+            //     'Total Gross Pay',
+            //     '₱' . number_format($totalGrossPay, 2)
+            // )
+            //     ->icon('heroicon-o-currency-dollar')
+            //     ->description('Sum of gross pay for open payroll periods')
+            //     ->color('success'),
         ];
     }
 }

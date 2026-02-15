@@ -18,6 +18,7 @@ class Employee extends Model
         'employee_number',
         'full_name',
         'position',
+        'branch_name',
         'employment_status',
         'daily_rate',
         'date_hired',

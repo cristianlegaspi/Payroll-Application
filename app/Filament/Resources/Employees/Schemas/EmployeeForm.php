@@ -31,6 +31,12 @@ class EmployeeForm
                         TextInput::make('position')
                             ->placeholder('HR Manager')
                             ->required(),
+                        
+                        TextInput::make('branch_name')
+                            ->label('Branch Name')
+                            ->placeholder('Brgy. San Isidro, City of Cabuyao Laguna')
+                            ->required(),
+
                         TextInput::make('tin')
                             ->label('TIN Number')
                             ->placeholder('354-123-456-000'),

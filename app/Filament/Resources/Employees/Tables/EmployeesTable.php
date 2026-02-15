@@ -23,6 +23,9 @@ class EmployeesTable
                     ->searchable(),
                 TextColumn::make('position')
                     ->searchable(),
+                 TextColumn::make('branch_name')
+                 ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
                 TextColumn::make('employment_status')
                     ->badge()
                     ->label('Employment Status')

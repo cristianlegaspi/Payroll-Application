@@ -19,6 +19,7 @@ class EmployeeRecordImport implements ToModel, WithHeadingRow
             [
                 'full_name'         => $row['full_name'],
                 'position'          => $row['position'],
+                'branch_name'          => $row['branch_name'],
                 'employment_status' => $row['employment_status'],
                 'daily_rate'        => $row['daily_rate'] ?? 0,
                 'date_hired'        => $row['date_hired'],

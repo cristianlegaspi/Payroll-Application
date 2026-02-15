@@ -21,6 +21,7 @@ class EmployeeInfolist
                         TextEntry::make('full_name')
                          ->label('Complete Name'),
                         TextEntry::make('position'),
+                        TextEntry::make('branch_name'),
                         TextEntry::make('employment_status')
                          ->label('Employement Status')
                         ->badge(),
