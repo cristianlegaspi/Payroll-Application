@@ -20,10 +20,12 @@ class PayrollPeriodsTable
                 TextColumn::make('start_date')
                     ->label('Start Date')
                     ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextColumn::make('end_date')
                     ->label('End Date') 
                     ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextColumn::make('status')
                  ->label('Payroll Status')
