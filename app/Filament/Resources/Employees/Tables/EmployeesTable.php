@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\Employees\Tables;
 
+use App\Models\Employee;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class EmployeesTable
 {
@@ -103,7 +106,19 @@ class EmployeesTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+             SelectFilter::make('branch_name')
+            ->label('Branch Name')
+            ->options(
+                Employee::query()
+                    ->select('branch_name')
+                    ->distinct()
+                    ->whereNotNull('branch_name')
+                    ->pluck('branch_name', 'branch_name')
+                    ->toArray()
+            )
+            ->searchable()
+            ->preload(),
+
             ])
             ->recordActions([
                 ViewAction::make(),
