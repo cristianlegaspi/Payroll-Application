@@ -71,7 +71,6 @@ class PayrollForm
                     ->default(0.0),
                 TextInput::make('other_earnings')
                     ->required()
-                      ->visible(false)
                     ->numeric()
                     ->disabled(true)
                     ->default(0.0),
@@ -88,7 +87,6 @@ class PayrollForm
                     ->default(0.0),
                 TextInput::make('shortages')
                     ->required()
-                      ->visible(false)
                     ->numeric()
                     ->default(0.0),
                 TextInput::make('sss_er')
