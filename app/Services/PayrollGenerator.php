@@ -18,7 +18,6 @@ class PayrollGenerator
                 ->where('payroll_period_id', $payrollPeriodId)
                 ->get();
 
-            // ✅ VALIDATION: Check if there are attendance records
             if ($records->isEmpty()) {
                 throw new Exception('No attendance data found. Payroll not generated.');
             }
@@ -29,52 +28,46 @@ class PayrollGenerator
                 if (!$employee) continue;
 
                 $dailyRate = (float) ($employee->daily_rate ?? 0);
-
-                // Ensure absences and undertime_hours are numeric
                 $absences = (float) ($record->absences ?? 0);
                 $undertimeHours = (float) ($record->undertime_hours ?? 0);
 
                 $basicSalary = (float) ($record->basic_salary ?? 0);
                 $overtimeSalary = (float) ($record->overtime_salary ?? 0);
                 $holidayPay = (float) ($record->holiday_pay ?? 0);
-                $grossPay = (float) ($record->gross_pay ?? 0); // ✅ leave gross pay unchanged
+                $grossPay = (float) ($record->gross_pay ?? 0);
 
-                // ✅ Compute absence deduction (for reference only, do not subtract)
-                $absenceDeduction = $absences * $dailyRate;
+                // =========================
+                // CONTRIBUTIONS
+                // =========================
 
+                $sssER = (float) ($employee->sss_er ?? 0);
                 $sssEE = (float) ($employee->sss_ee ?? 0);
-                $philhealthEE = (float) ($employee->philhealth_ee ?? 0);
-                $pagibigEE = (float) ($employee->pagibig_ee ?? 0);
-
                 $sssLoan = (float) ($employee->sss_loan ?? 0);
+                $sssTotal = $sssEE + $sssLoan; // ONLY EE + Loan deducted
+
+                $philhealthER = (float) ($employee->philhealth_er ?? 0);
+                $philhealthEE = (float) ($employee->philhealth_ee ?? 0);
+
+                $pagibigER = (float) ($employee->pagibig_er ?? 0);
+                $pagibigEE = (float) ($employee->pagibig_ee ?? 0);
                 $pagibigLoan = (float) ($employee->pagibig_loan ?? 0);
+                $pagibigTotal = $pagibigEE + $pagibigLoan; // ONLY EE + Loan deducted
 
                 $cashAdvance = (float) ($employee->cash_advance ?? 0);
                 $otherDeductions = (float) ($employee->other_deductions ?? 0);
 
-                // Total deductions exclude absence deduction
+                // =========================
+                // TOTAL DEDUCTIONS
+                // =========================
+
                 $totalDeductions =
-                    $sssEE +
+                    $sssTotal +
                     $philhealthEE +
-                    $pagibigEE +
-                    $sssLoan +
-                    $pagibigLoan +
+                    $pagibigTotal +
                     $cashAdvance +
                     $otherDeductions;
 
                 $netPay = round($grossPay - $totalDeductions, 2);
-
-              
-                // dd([
-                //     'employee_id' => $employee->id,
-                //     'absences' => $absences,
-                //     'daily_rate' => $dailyRate,
-                //     'absence_deduction' => $absenceDeduction,
-                //     'gross_pay' => $grossPay,
-                //     'total_deductions' => $totalDeductions,
-                //     'net_pay' => $netPay,
-                //     'undertime_hours' => $undertimeHours,
-                // ]);
 
                 Payroll::updateOrCreate(
                     [
@@ -93,31 +86,35 @@ class PayrollGenerator
                         'basic_salary' => $basicSalary,
                         'overtime_salary' => $overtimeSalary,
                         'holiday_pay' => $holidayPay,
-                        'gross_pay' => $grossPay, // unchanged
+                        'gross_pay' => $grossPay,
 
-                        'sss_er' => $employee->sss_er,
+                        // =========================
+                        // SAVE CONTRIBUTIONS PROPERLY
+                        // =========================
+                        'sss_er' => $sssER,
                         'sss_ee' => $sssEE,
                         'sss_loan' => $sssLoan,
+                        'sss_total' => $sssTotal,
 
-                        'philhealth_er' => $employee->philhealth_er,
+                        'philhealth_er' => $philhealthER,
                         'philhealth_ee' => $philhealthEE,
 
-                        'pagibig_er' => $employee->pagibig_er,
+                        'pagibig_er' => $pagibigER,
                         'pagibig_ee' => $pagibigEE,
                         'pagibig_loan' => $pagibigLoan,
+                        'pagibig_total' => $pagibigTotal,
 
                         'cash_advance' => $cashAdvance,
-                        'other_deductions' => $otherDeductions,
-                        'absence_deduction' => $absenceDeduction, // tracked separately
+                        'shortages' => $otherDeductions,
+
                         'total_deductions' => $totalDeductions,
-                        'net_pay' => $netPay, // unchanged
+                        'net_pay' => $netPay,
 
                         'status' => 'generated',
                     ]
                 );
             }
 
-            // ✅ FINALIZE ONLY IF DATA EXISTS
             PayrollPeriod::where('id', $payrollPeriodId)
                 ->update(['status' => 'finalized']);
         });
