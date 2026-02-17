@@ -59,10 +59,26 @@ class EmployeeInfolist
                             ->label('ER')       
                             ->numeric()
                             ->default(0.0),
-                        TextEntry::make('sss_loan')
-                            ->label('Loan')
+
+
+                          TextEntry::make('premium_voluntary_ss_contributionr')
+                            ->label('Premium Voluntary SSS Contributor')       
                             ->numeric()
                             ->default(0.0),
+                        
+
+                        TextEntry::make('sss_salary_loan')
+                            ->label('SSS Salary Loan')
+                            ->numeric()
+                            ->default(0.0),
+                        
+                        TextEntry::make('sss_calamity_loan')
+                            ->label('SSS Calamitty Loan')
+                            ->numeric()
+                            ->default(0.0),
+
+
+                        
                     ])->collapsible()->collapsed()->columns(3),         
             
             Section::make('PhilHealth Contribution Details')
@@ -87,8 +103,8 @@ class EmployeeInfolist
                             ->label('ER')
                             ->numeric()
                             ->default(0.0),
-                        TextEntry::make('pagibig_loan')
-                             ->label('Loan')                
+                        TextEntry::make('pagibig_salary_loan')
+                             ->label('Pagibig Salary Loan')                
                             ->numeric()         
                             ->default(0.0),             
                     ])->collapsible()->collapsed()->columns(3),

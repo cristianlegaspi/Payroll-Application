@@ -18,7 +18,7 @@ class EmployeeForm
                     ->schema([
 
                         TextInput::make('employee_number')
-                            ->placeholder('OA-EMP-101')
+                            ->placeholder('1')
                             ->required()
                             ->unique()
                             ->label('Employee Number'),
@@ -34,7 +34,7 @@ class EmployeeForm
                         
                         TextInput::make('branch_name')
                             ->label('Branch Name')
-                            ->placeholder('Brgy. San Isidro, City of Cabuyao Laguna')
+                            ->placeholder('Sta Cruz')
                             ->required(),
 
                         TextInput::make('tin')
@@ -47,7 +47,7 @@ class EmployeeForm
                     ->schema([
 
                         Select::make('employment_status')
-                            ->options(['Regular' => 'Regular', 'Probationary' => 'Probationary'])
+                            ->options(['Regular' => 'Regular', 'Probationary' => 'Probationary', 'Resigned' => 'Resigned'])
                             ->required(),
                         Select::make('employee_type')
                             ->options(['Admin' => 'Admin', 'Field' => 'Field'])
@@ -77,6 +77,9 @@ class EmployeeForm
                  Section::make('SSS Contribution Details')
                     ->schema([
 
+
+             
+
                         TextInput::make('sss_ee')
                             ->label('EE')
                             ->required()
@@ -88,8 +91,20 @@ class EmployeeForm
                             ->numeric()
                             ->default(0.0),
 
-                        TextInput::make('sss_loan')
-                         ->label('Loan')
+                        TextInput::make('premium_voluntary_ss_contribution')
+                            ->label('Premium Voluntary SS Contribution')
+                            ->required()
+                            ->numeric()
+                            ->default(0.0),
+
+                        TextInput::make('sss_salary_loan')
+                         ->label('SSS Salary Loan')
+                        ->required()
+                        ->numeric()
+                        ->default(0.0),
+
+                        TextInput::make('sss_calamity_loan')
+                         ->label('SSS Calamity Loan')
                         ->required()
                         ->numeric()
                         ->default(0.0)
@@ -126,14 +141,12 @@ class EmployeeForm
                             ->required()
                             ->numeric()
                             ->default(0.0),
-                          TextInput::make('pagibig_loan')
+                          TextInput::make('pagibig_salary_loan')
                             ->required()
-                            ->label('Loan')
+                            ->label('Pagibig Salary Loan')
                             ->numeric()
                             ->default(0.0),
                     ])->collapsible()->collapsed()->columns(3),
-
-
             ])->columns(1);
     }
 }

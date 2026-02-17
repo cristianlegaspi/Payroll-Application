@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('employee_number')->unique();
             $table->string('full_name');
             $table->string('position');
-            $table->enum('employment_status', ['Regular', 'Probationary']);
+            $table->enum('employment_status', ['Regular', 'Probationary', 'Resigned']);
             $table->decimal('daily_rate', 10, 2);
             $table->date('date_hired');
             $table->enum('employee_type', ['Admin','Field']);
+            
             $table->string('tin')->nullable();
             $table->decimal('sss_ee', 10, 3)->default(0); // Employee share
             $table->decimal('sss_er', 10, 3)->default(0); // Employer share

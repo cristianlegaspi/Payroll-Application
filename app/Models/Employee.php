@@ -26,14 +26,18 @@ class Employee extends Model
         'tin',
         'sss_ee',
         'sss_er',
-        'sss_loan',
+        'sss_salary_loan',
+        'sss_calamity_loan',
         'philhealth_ee',
         'philhealth_er',
         'pagibig_ee',
         'pagibig_er',
         'pagibig_loan',
         'status',
-        'date_of_birth',     
+        'date_of_birth', 
+        'premium_voluntary_ss_contribution',
+        'pagibig_salary_loan'
+
     ];
 
     // Casts for specific data types

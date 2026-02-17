@@ -11,6 +11,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Actions\Action;
 
 class EmployeesTable
 {
@@ -35,6 +36,7 @@ class EmployeesTable
                         ->color(fn(string $state): string => match ($state) {
                             'Probationary' => 'warning',
                             'Regular' => 'success',
+                            'Resigned' => 'danger',
                             }),
                 TextColumn::make('daily_rate')
                     ->label('Daily Rate')
@@ -116,20 +118,37 @@ class EmployeesTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-             SelectFilter::make('branch_name')
-            ->label('Branch Name')
-            ->options(
-                Employee::query()
-                    ->select('branch_name')
-                    ->distinct()
-                    ->whereNotNull('branch_name')
-                    ->pluck('branch_name', 'branch_name')
-                    ->toArray()
-            )
-            ->searchable()
-            ->preload(),
+         ->filters([
+    // Existing Branch Filter
+    SelectFilter::make('branch_name')
+        ->label('Branch Name')
+        ->options(
+            Employee::query()
+                ->select('branch_name')
+                ->distinct()
+                ->whereNotNull('branch_name')
+                ->pluck('branch_name', 'branch_name')
+                ->toArray()
+        )
+        ->searchable()
+        ->preload(),
 
+    // New: Filter by Employee Status (Active/Resigned)
+    SelectFilter::make('status')
+        ->label('Record Status')
+        ->options([
+            'Active' => 'Active',
+            'Resigned' => 'Resigned',
+        ]),
+
+    // New: Filter by Employment Type (Regular/Probationary)
+    SelectFilter::make('employment_status')
+        ->label('Employment Status')
+        ->options([
+            'Regular' => 'Regular',
+            'Probationary' => 'Probationary',
+            'Resigned' => 'Resigned',
+        ]),
             ])
             ->recordActions([
                 ViewAction::make(),

@@ -12,19 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->date('date_of_birth')->after('date_hired');
-            $table->enum('status', ['Active', 'Resigned'])
-                  ->default('Active')
-                  ->after('date_of_birth');
+            // 1. Remove the old pagibig_loan column safely
+            if (Schema::hasColumn('employees', 'pagibig_loan')) {
+                $table->dropColumn('pagibig_loan');
+            }
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
         Schema::table('employees', function (Blueprint $table) {
-             $table->dropColumn(['date_of_birth', 'status']);
+            // Re-add the column if you need to rollback
+            if (!Schema::hasColumn('employees', 'pagibig_loan')) {
+                $table->decimal('pagibig_loan', 10, 3)->default(0)->after('pagibig_er');
+            }
         });
     }
 };
