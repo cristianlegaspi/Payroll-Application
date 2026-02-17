@@ -57,12 +57,18 @@ class EmployeeForm
                             ->required()
                             ->label('Daily Rate (PHP)')
                             ->numeric(),
-                        DatePicker::make('date_hired')
-                            ->required()
-                            ->label('Date Hired'),
-                        DatePicker::make('date_of_birth')
-                            ->required()
-                            ->label('Date of Birth'),
+                       DatePicker::make('date_hired')
+                            ->label('Date Hired')
+                            ->displayFormat('Y-m-d')   // how user sees it
+                            ->format('Y-m-d')          // how it saves in database
+                            ->native(false)            // optional: nicer UI
+                            ->required(),
+                       DatePicker::make('date_of_birth')
+                            ->label('Date of Birth')
+                            ->displayFormat('Y-m-d')
+                            ->format('Y-m-d')
+                            ->native(false)
+                            ->required(),
                         Select::make('status')
                             ->options(['Active' => 'Active', 'Resigned' => 'Resigned'])
                             ->required(),
