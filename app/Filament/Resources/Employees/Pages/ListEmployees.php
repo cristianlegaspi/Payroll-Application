@@ -22,7 +22,7 @@ class ListEmployees extends ListRecords
             Action::make('printEmployeeReport')
                 ->label('Print Employee Report')
                 ->icon('heroicon-o-printer')
-                ->color('primary')
+                ->color('success')
                 ->form([
                     Select::make('branch_name')
                         ->label('Branch')
