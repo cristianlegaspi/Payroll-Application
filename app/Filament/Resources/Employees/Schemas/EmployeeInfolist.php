@@ -22,6 +22,9 @@ class EmployeeInfolist
                          ->label('Complete Name'),
                         TextEntry::make('position'),
                         TextEntry::make('branch_name'),
+                         TextEntry::make('date_of_birth')
+                         ->label('Date of Birth')
+                        ->date(),
                         TextEntry::make('employment_status')
                          ->label('Employement Status')
                         ->badge(),
@@ -37,6 +40,9 @@ class EmployeeInfolist
                         ->date(),
                         TextEntry::make('employee_type')
                         ->label('Employment Type')
+                        ->badge(),
+                        TextEntry::make('status')
+                        ->label('Status')
                         ->badge(),
                         TextEntry::make('tin')
                         ->label('Tax Identification Number (TIN)')

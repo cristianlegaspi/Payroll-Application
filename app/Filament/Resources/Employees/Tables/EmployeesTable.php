@@ -44,6 +44,17 @@ class EmployeesTable
                     ->date()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
+                TextColumn::make('date_of_birth')
+                    ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                TextColumn::make('status')
+                    ->badge()
+                    ->label('Status')
+                        ->color(fn(string $state): string => match ($state) {
+                            'Resigned' => 'danger',
+                            'Active' => 'success',
+                            }),
                 TextColumn::make('employee_type')
                     ->badge()
                     ->label('Employment Type')

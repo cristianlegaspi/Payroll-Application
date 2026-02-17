@@ -60,6 +60,12 @@ class EmployeeForm
                         DatePicker::make('date_hired')
                             ->required()
                             ->label('Date Hired'),
+                        DatePicker::make('date_of_birth')
+                            ->required()
+                            ->label('Date of Birth'),
+                        Select::make('status')
+                            ->options(['Active' => 'Active', 'Resigned' => 'Resigned'])
+                            ->required(),
                     ])->collapsible()->collapsed()->columns(1),
                 
                  Section::make('SSS Contribution Details')

@@ -5,6 +5,8 @@ namespace App\Imports;
 use App\Models\Employee;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+
 
 class EmployeeRecordImport implements ToModel, WithHeadingRow
 {
@@ -22,7 +24,17 @@ class EmployeeRecordImport implements ToModel, WithHeadingRow
                 'branch_name'          => $row['branch_name'],
                 'employment_status' => $row['employment_status'],
                 'daily_rate'        => $row['daily_rate'] ?? 0,
-                'date_hired'        => $row['date_hired'],
+               
+                 'date_hired' => isset($row['date_hired'])
+                ? Date::excelToDateTimeObject($row['date_hired'])
+                : null,
+
+
+                'date_of_birth' => isset($row['date_hired'])
+                ? Date::excelToDateTimeObject($row['date_of_birth'])
+                : null,
+           
+                'status'        => $row['status'],
                 'employee_type'     => $row['employee_type'],
                 'tin'               => $row['tin'] ?? null,
                 'sss_ee'            => $row['sss_ee'] ?? 0,

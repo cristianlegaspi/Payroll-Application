@@ -31,13 +31,16 @@ class Employee extends Model
         'philhealth_er',
         'pagibig_ee',
         'pagibig_er',
-        'pagibig_loan',     
+        'pagibig_loan',
+        'status',
+        'date_of_birth',     
     ];
 
     // Casts for specific data types
     protected $casts = [
         'daily_rate' => 'decimal:2',
         'date_hired' => 'date',
+        'date_of_birth' => 'date',
     ];
 
     // Optionally: custom accessor for full display
