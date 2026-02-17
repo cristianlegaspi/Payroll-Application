@@ -18,16 +18,17 @@ class ListEmployees extends ListRecords
     {
         return [
 
-            // ✅ PRINT EMPLOYEE REPORT
             Action::make('printEmployeeReport')
                 ->label('Print Employee Report')
                 ->icon('heroicon-o-printer')
                 ->color('success')
                 ->form([
+
+                    // ✅ Branch
                     Select::make('branch_name')
                         ->label('Branch')
                         ->options(
-                            ['ALL' => 'All Branches'] + 
+                            ['ALL' => 'All Branches'] +
                             Employee::query()
                                 ->select('branch_name')
                                 ->distinct()
@@ -36,23 +37,55 @@ class ListEmployees extends ListRecords
                         )
                         ->searchable()
                         ->required(),
+
+                    // ✅ Record Status
+                    Select::make('status')
+                        ->label('Record Status')
+                        ->options([
+                            'ALL' => 'All',
+                            'Active' => 'Active',
+                            'Resigned' => 'Resigned',
+                        ])
+                        ->default('ALL')
+                        ->required(),
+
+                    // ✅ Employment Status
+                    Select::make('employment_status')
+                        ->label('Employment Status')
+                        ->options([
+                            'ALL' => 'All',
+                            'Regular' => 'Regular',
+                            'Probationary' => 'Probationary',
+                        ])
+                        ->default('ALL')
+                        ->required(),
                 ])
                 ->action(function (array $data) {
 
-                    // If ALL selected, get all employees
-                    if ($data['branch_name'] === 'ALL') {
-                        $employees = Employee::orderBy('branch_name')
-                            ->orderBy('full_name')
-                            ->get();
+                    $query = Employee::query();
 
-                        $branchLabel = 'All Branches';
-                    } else {
-                        $employees = Employee::where('branch_name', $data['branch_name'])
-                            ->orderBy('full_name')
-                            ->get();
-
+                    // Branch filter
+                    if ($data['branch_name'] !== 'ALL') {
+                        $query->where('branch_name', $data['branch_name']);
                         $branchLabel = $data['branch_name'];
+                    } else {
+                        $branchLabel = 'All Branches';
                     }
+
+                    // Status filter
+                    if ($data['status'] !== 'ALL') {
+                        $query->where('status', $data['status']);
+                    }
+
+                    // Employment Status filter
+                    if ($data['employment_status'] !== 'ALL') {
+                        $query->where('employment_status', $data['employment_status']);
+                    }
+
+                    $employees = $query
+                        ->orderBy('branch_name')
+                        ->orderBy('full_name')
+                        ->get();
 
                     $pdf = Pdf::loadView('reports.employee-report', [
                         'employees' => $employees,
