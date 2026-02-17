@@ -79,7 +79,7 @@ class EmployeeInfolist
 
 
                         
-                    ])->collapsible()->collapsed()->columns(3),         
+                    ])->collapsible()->collapsed()->columns(2),         
             
             Section::make('PhilHealth Contribution Details')
                     ->schema([
