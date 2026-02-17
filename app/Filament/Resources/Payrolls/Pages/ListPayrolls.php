@@ -10,7 +10,7 @@ use Filament\Resources\Pages\ListRecords;
 use Filament\Notifications\Notification;
 use App\Models\PayrollPeriod;
 use App\Models\Payroll;
-use Illuminate\Support\Facades\View;
+use App\Models\Employee;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class ListPayrolls extends ListRecords
@@ -20,47 +20,77 @@ class ListPayrolls extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-             // ✅ PRINT PAYROLL REPORT
-        Action::make('printPayrollReport')
-            ->label('Print Payroll Report')
-            ->icon('heroicon-o-printer')
-            ->color('primary')
-            ->form([
-                Select::make('payroll_period_id')
-                    ->label('Finalized Payroll Period')
-                    ->relationship(
-                        name: 'payrollPeriod',
-                        titleAttribute: 'description',
-                        modifyQueryUsing: fn ($query) =>
-                            $query->where('status', 'finalized')
-                    )
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-            ])
-            ->action(function (array $data) {
+            // ✅ PRINT PAYROLL REPORT
+            Action::make('printPayrollReport')
+                ->label('Print Payroll Report')
+                ->icon('heroicon-o-printer')
+                ->color('primary')
+                ->form([
+                    // Select finalized payroll period
+                    Select::make('payroll_period_id')
+                        ->label('Finalized Payroll Period')
+                        ->relationship(
+                            name: 'payrollPeriod',
+                            titleAttribute: 'description',
+                            modifyQueryUsing: fn ($query) =>
+                                $query->where('status', 'finalized')
+                        )
+                        ->searchable()
+                        ->preload()
+                        ->required(),
 
-                $period = PayrollPeriod::findOrFail($data['payroll_period_id']);
+                    // Select branch (from Employee table)
+                    Select::make('branch_name')
+                        ->label('Branch')
+                        ->options(
+                            Employee::query()
+                                ->select('branch_name')
+                                ->distinct()
+                                ->pluck('branch_name', 'branch_name')
+                                ->toArray()
+                        )
+                        ->searchable()
+                        ->required(),
+                ])
+                ->action(function (array $data) {
 
-                $payrolls = Payroll::with('employee')
-                    ->where('payroll_period_id', $period->id)
-                    ->orderBy('employee_id')
-                    ->get();
+                    // Ensure both period and branch are selected
+                    if (empty($data['payroll_period_id']) || empty($data['branch_name'])) {
+                        Notification::make()
+                            ->title('Please select both payroll period and branch before printing.')
+                            ->danger()
+                            ->send();
+                        return;
+                    }
 
-                $pdf = Pdf::loadView('reports.payroll-summary', [
-                    'period' => $period,
-                    'payrolls' => $payrolls,
-                ])->setPaper('legal', 'landscape');
+                    $period = PayrollPeriod::findOrFail($data['payroll_period_id']);
 
-                return response()->streamDownload(
-                    fn () => print($pdf->output()),
-                    'Payroll-Report-' . $period->description . '.pdf'
-                );
-            }),
+                    $payrolls = Payroll::with('employee')
+                        ->where('payroll_period_id', $period->id)
+                        ->whereHas('employee', function ($query) use ($data) {
+                            $query->where('branch_name', $data['branch_name']);
+                        })
+                        ->orderBy('employee_id')
+                        ->get();
 
-                    // ✅ YOUR EXISTING GENERATE BUTTON
+                    $pdf = Pdf::loadView('reports.payroll-summary', [
+                        'period' => $period,
+                        'payrolls' => $payrolls,
+                        'branch' => $data['branch_name'],
+                    ])->setPaper('legal', 'landscape');
 
+                    // Stream PDF to browser for preview
+                    return response()->stream(
+                        fn () => print($pdf->output()),
+                        200,
+                        [
+                            'Content-Type' => 'application/pdf',
+                            'Content-Disposition' => 'inline; filename="Payroll-Report-' . $period->description . '.pdf"',
+                        ]
+                    );
+                }),
 
+            // ✅ GENERATE PAYROLL BUTTON
             Action::make('generatePayroll')
                 ->label('Generate Payroll')
                 ->icon('heroicon-o-currency-dollar')
@@ -82,7 +112,6 @@ class ListPayrolls extends ListRecords
                 ->action(function (array $data) {
 
                     try {
-
                         PayrollGenerator::generate(
                             $data['payroll_period_id']
                         );
@@ -93,7 +122,6 @@ class ListPayrolls extends ListRecords
                             ->send();
 
                     } catch (\Throwable $e) {
-
                         Notification::make()
                             ->title($e->getMessage())
                             ->danger()
