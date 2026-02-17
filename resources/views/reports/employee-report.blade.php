@@ -76,7 +76,7 @@
 
                 <th>SSS EE</th>
                 <th>SSS ER</th>
-                <th>SSS Voluntary</th>
+                <th>SSS Premium Voluntary</th>
                 <th>SSS Salary Loan</th>
                 <th>SSS Calamity Loan</th>
 
