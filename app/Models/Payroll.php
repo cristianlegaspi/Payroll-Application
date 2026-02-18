@@ -31,15 +31,20 @@ class Payroll extends Model
 
         'sss_er',
         'sss_ee',
-        'sss_loan',
+        'sss_salary_loan',
+        'sss_calamity_loan',
+
+
         'sss_total',
+        'premium_voluntary_ss_contribution',
 
         'philhealth_er',
         'philhealth_ee',
 
         'pagibig_er',
         'pagibig_ee',
-        'pagibig_loan',
+         'pagibig_salary_loan',
+
         'pagibig_total',
 
         'total_deductions',

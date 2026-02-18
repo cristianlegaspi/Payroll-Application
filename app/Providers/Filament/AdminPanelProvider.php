@@ -19,7 +19,8 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-// use Phiki\Theme\Theme;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Support\Enums\Width;
 // use Filament\Infolists\Components\CodeEntry;
 use App\Filament\Widgets\EmployeeStats;
 
@@ -41,7 +42,8 @@ class AdminPanelProvider extends PanelProvider
             //     'primary' => null,
             //     'secondary' => null,
             // ])
-
+            //    ->maxContentWidth(Width::Full)
+            // ->sidebarFullyCollapsibleOnDesktop()
 
 
 
@@ -64,6 +66,8 @@ class AdminPanelProvider extends PanelProvider
                // AccountWidget::class,
                 // FilamentInfoWidget::class,
             ])
+            //  ->collapsibleNavigationGroups(false)
+            //  ->topNavigation()
 
             
             ->middleware([

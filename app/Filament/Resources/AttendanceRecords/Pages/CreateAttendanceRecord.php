@@ -27,5 +27,5 @@ class CreateAttendanceRecord extends CreateRecord
         ->title('Attendance Record Created')
         ->body($this->getCreatedNotificationBody());
     }
-
+    
 }

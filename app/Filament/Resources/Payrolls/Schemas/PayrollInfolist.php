@@ -13,6 +13,7 @@ class PayrollInfolist
         return $schema
             ->components([
 
+                // Employee Details
                 Section::make('Employee Details')
                     ->schema([
                         TextEntry::make('employee.full_name')
@@ -24,7 +25,8 @@ class PayrollInfolist
                     ])
                     ->columns(2),
 
-                  Section::make('Summary of Deductions and Net Pay')
+                // Summary of Deductions and Net Pay
+                Section::make('Summary of Deductions and Net Pay')
                     ->schema([
                         TextEntry::make('total_deductions')
                             ->label('Total Deductions')
@@ -38,8 +40,8 @@ class PayrollInfolist
                     ])
                     ->columns(2),
 
-
-                   Section::make('Salary Details')
+                // Salary Details
+                Section::make('Salary Details')
                     ->schema([
                         TextEntry::make('basic_salary')
                             ->label('Basic Salary')
@@ -62,7 +64,8 @@ class PayrollInfolist
                             ->numeric(),
                     ])
                     ->columns(5),
-                
+
+                // Attendance Details
                 Section::make('Attendance Details')
                     ->schema([
                         TextEntry::make('days_present')
@@ -85,51 +88,54 @@ class PayrollInfolist
                     ->collapsible()
                     ->collapsed(),
 
-             
-
+                // Deduction Details
                 Section::make('Deduction Details')
                     ->schema([
-                       
-                    Section::make('Other Deductions')
-                    ->schema([
-                         TextEntry::make('cash_advance')
-                            ->label('Cash Advance')
-                            ->numeric(),
-                         TextEntry::make('shortages')
-                            ->label('Shortages')
-                            ->numeric(),
+
+                        Section::make('Other Deductions')
+                            ->schema([
+                                TextEntry::make('cash_advance')
+                                    ->label('Cash Advance')
+                                    ->numeric(),
+                                TextEntry::make('shortages')
+                                    ->label('Shortages')
+                                    ->numeric(),
                             ])
                             ->columns(2)
                             ->collapsible()
                             ->collapsed(),
 
-                     Section::make('SSS Contribution Details')
-                    ->schema([
-                         TextEntry::make('sss_er')
-                            ->label('SSS ER')
-                            ->numeric(),
-                         TextEntry::make('sss_ee')
-                            ->label('SSS EE')
-                            ->numeric(),
-                        TextEntry::make('sss_loan')
-                            ->label('SSS Loan')
-                            ->numeric(),
+                        Section::make('SSS Contribution Details')
+                            ->schema([
+                                TextEntry::make('sss_er')
+                                    ->label('SSS ER')
+                                    ->numeric(),
+                                TextEntry::make('sss_ee')
+                                    ->label('SSS EE')
+                                    ->numeric(),
+                                TextEntry::make('premium_voluntary_ss_contribution')
+                                    ->label('SSS Premium Voluntary Contribution')
+                                    ->numeric(),
+                                TextEntry::make('sss_salary_loan')
+                                    ->label('SSS Salary Loan')
+                                    ->numeric(),
+                                TextEntry::make('sss_calamity_loan')
+                                    ->label('SSS Calamity Loan')
+                                    ->numeric(),
                             ])
                             ->columns(3)
                             ->collapsible()
                             ->collapsed(),
 
-                    Section::make('Pag-IBIG Contribution Details')
+                        Section::make('Pag-IBIG Contribution Details')
                             ->schema([
                                 TextEntry::make('pagibig_er')
                                     ->label('Pag-IBIG ER')
                                     ->numeric(),
-
                                 TextEntry::make('pagibig_ee')
                                     ->label('Pag-IBIG EE')
                                     ->numeric(),
-
-                                TextEntry::make('pagibig_loan')
+                                TextEntry::make('pagibig_salary_loan')
                                     ->label('Pag-IBIG Loan')
                                     ->numeric(),
                             ])
@@ -142,7 +148,6 @@ class PayrollInfolist
                                 TextEntry::make('philhealth_er')
                                     ->label('PhilHealth ER')
                                     ->numeric(),
-
                                 TextEntry::make('philhealth_ee')
                                     ->label('PhilHealth EE')
                                     ->numeric(),
@@ -154,8 +159,7 @@ class PayrollInfolist
                     ])
                     ->columns(1),
 
-              
-
-            ])->columns(1);
+            ])
+            ->columns(1);
     }
 }

@@ -100,7 +100,19 @@ class PayrollForm
                     ->numeric()
                     ->disabled(true)
                     ->default(0.0),
-                TextInput::make('sss_loan')
+                TextInput::make('sss_salary_loan')
+                    ->required()
+                    ->disabled(true)
+                      ->visible(false)
+                    ->numeric()
+                    ->default(0.0),
+                 TextInput::make('sss_calamity_loan')
+                    ->required()
+                    ->disabled(true)
+                      ->visible(false)
+                    ->numeric()
+                    ->default(0.0),
+                TextInput::make('premium_voluntary_ss_contribution')
                     ->required()
                     ->disabled(true)
                       ->visible(false)
@@ -136,7 +148,7 @@ class PayrollForm
                     ->numeric()
                       ->visible(false)
                     ->default(0.0),
-                TextInput::make('pagibig_loan')
+                TextInput::make('pagibig_salary_loan')
                     ->required()
                     ->disabled(true)
                     ->numeric()

@@ -80,16 +80,9 @@ class AttendanceRecordsTable
             ])
 
             ->filters([
-                // Payroll Period Filter (Finalized)
-                SelectFilter::make('payroll_period_id')
-                    ->label('Payroll Period (Finalized)')
-                    ->relationship(
-                        'payrollPeriod',
-                        'description',
-                        fn (Builder $query) => $query->where('status', 'finalized')->orderBy('description', 'desc')
-                    )
-                    ->searchable()
-                    ->preload(),
+
+            
+             
 
                 // Employee Filter
                 SelectFilter::make('employee_id')
