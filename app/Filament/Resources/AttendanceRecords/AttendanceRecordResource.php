@@ -55,7 +55,7 @@ class AttendanceRecordResource extends Resource
 
                 // ------------------- Generate Excel Template -------------------
                 Action::make('create_attendance')
-                    ->label('Create Attendance')
+                    ->label('Generate Excel File')
                     ->color('success')
                     ->form([
                         Select::make('payroll_period_id')
@@ -92,7 +92,7 @@ class AttendanceRecordResource extends Resource
 
                 // ------------------- Upload Filled Excel -------------------
                 Action::make('import')
-                    ->label('Upload Attendance Excel')
+                    ->label('Upload Bulk Excel')
                     ->form([
                         FileUpload::make('file')
                             ->disk('public')
@@ -128,6 +128,7 @@ class AttendanceRecordResource extends Resource
     {
         return [
             'index' => ListAttendanceRecords::route('/'),
+            'create' => CreateAttendanceRecord::route('/create'),
         ];
     }
 }

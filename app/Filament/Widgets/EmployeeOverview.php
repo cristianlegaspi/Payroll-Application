@@ -14,17 +14,20 @@ class EmployeeOverview extends StatsOverviewWidget
     {
         // Get the most recent finalized payroll period (by end_date)
         $latestFinalizedPeriod = PayrollPeriod::where('status', 'finalized')
-            ->orderByDesc('end_date') // use payroll date, not created_at
+            ->orderByDesc('end_date')
             ->first();
 
         $totalBasicSalary = 0;
+        $totalOvertimeSalary = 0;
         $periodDescription = 'No finalized payroll period';
 
         if ($latestFinalizedPeriod) {
             $periodDescription = $latestFinalizedPeriod->description;
 
-            $totalBasicSalary = Payroll::where('payroll_period_id', $latestFinalizedPeriod->id)
-                ->sum('basic_salary');
+            $payrollQuery = Payroll::where('payroll_period_id', $latestFinalizedPeriod->id);
+
+            $totalBasicSalary = $payrollQuery->sum('basic_salary');
+            $totalOvertimeSalary = $payrollQuery->sum('overtime_salary');
         }
 
         return [
@@ -48,6 +51,14 @@ class EmployeeOverview extends StatsOverviewWidget
                 ->icon('heroicon-o-banknotes')
                 ->description('Sum of basic salary for latest finalized period')
                 ->color('success'),
+
+            Stat::make(
+                'Total Overtime Salary (Latest Finalized)',
+                '₱' . number_format($totalOvertimeSalary, 2)
+            )
+                ->icon('heroicon-o-clock')
+                ->description('Sum of overtime salary for latest finalized period')
+                ->color('info'),
         ];
     }
 }

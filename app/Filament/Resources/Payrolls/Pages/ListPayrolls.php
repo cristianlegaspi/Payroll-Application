@@ -92,7 +92,7 @@ class ListPayrolls extends ListRecords
 
             // ✅ GENERATE PAYROLL BUTTON
             Action::make('generatePayroll')
-                ->label('Generate Payroll')
+                ->label('Generate Payroll Report')
                 ->icon('heroicon-o-currency-dollar')
                 ->color('success')
                 ->form([
