@@ -10,6 +10,11 @@ use App\Models\Payroll;
 
 class EmployeeOverview extends StatsOverviewWidget
 {
+    protected function getColumns(): int
+    {
+        return 3; // 👈 Force maximum 3 stats per row
+    }
+
     protected function getStats(): array
     {
         // Get the most recent finalized payroll period (by end_date)
